@@ -8,7 +8,7 @@ import { MaterialIcons } from '@expo/vector-icons'; // Importando ícones
 
 const Tab = createBottomTabNavigator();
 
-// Componente da Câmera
+
 function CameraScreen({ photos, setPhotos }) {
   const cameraRef = useRef<CameraView>(null);
   const [cameraReady, setCameraReady] = useState(false);
@@ -45,7 +45,6 @@ function CameraScreen({ photos, setPhotos }) {
       };
       const photo = await cameraRef.current.takePictureAsync(option);
       if (photo) {
-        // Adiciona a foto à galeria
         setPhotos([...photos, photo.uri]);
       }
     }
@@ -60,12 +59,11 @@ function CameraScreen({ photos, setPhotos }) {
         ref={cameraRef}
       />
       <View style={styles.buttonContainer}>
-        {/* Ícone para virar a câmera */}
         <TouchableOpacity style={styles.iconButton} onPress={handleChangeCamera}>
           <MaterialIcons name="flip-camera-android" size={40} color="#6200ee" />
         </TouchableOpacity>
 
-        {/* Ícone para tirar foto */}
+        
         <TouchableOpacity style={styles.iconButton} onPress={handleTakePicture}>
           <MaterialIcons name="camera" size={40} color="#6200ee" />
         </TouchableOpacity>
@@ -74,7 +72,7 @@ function CameraScreen({ photos, setPhotos }) {
   );
 }
 
-// Componente da Galeria
+
 function GalleryScreen({ photos, setPhotos }) {
   const [selectedPhotos, setSelectedPhotos] = useState<string[]>([]);
   const fadeAnim = useRef(new Animated.Value(1)).current; // Animação de opacidade
@@ -101,16 +99,15 @@ function GalleryScreen({ photos, setPhotos }) {
   };
 
   const handleDeletePhotos = () => {
-    // Animação de fade out para as fotos selecionadas
     Animated.timing(fadeAnim, {
-      toValue: 0, // Opacidade final (0 = invisível)
-      duration: 500, // Duração da animação em milissegundos
-      useNativeDriver: true, // Melhora o desempenho
+      toValue: 0, 
+      duration: 500, 
+      useNativeDriver: true, 
     }).start(() => {
-      // Remove as fotos após a animação
+      
       setPhotos(photos.filter(photo => !selectedPhotos.includes(photo)));
       setSelectedPhotos([]);
-      fadeAnim.setValue(1); // Reseta a animação para o próximo uso
+      fadeAnim.setValue(1); 
     });
   };
 
@@ -124,7 +121,7 @@ function GalleryScreen({ photos, setPhotos }) {
           <TouchableOpacity onPress={() => handleSelectPhoto(item)}>
             <Animated.View
               style={{
-                opacity: selectedPhotos.includes(item) ? fadeAnim : 1, // Aplica a animação apenas às fotos selecionadas
+                opacity: selectedPhotos.includes(item) ? fadeAnim : 1, 
               }}
             >
               <Image
@@ -139,12 +136,12 @@ function GalleryScreen({ photos, setPhotos }) {
         )}
       />
       <View style={styles.galleryButtonContainer}>
-        {/* Ícone para adicionar fotos da galeria */}
+       
         <TouchableOpacity style={styles.iconButton} onPress={handlePickImage}>
           <MaterialIcons name="add-photo-alternate" size={40} color="#6200ee" />
         </TouchableOpacity>
 
-        {/* Ícone para excluir fotos selecionadas */}
+        
         {selectedPhotos.length > 0 && (
           <TouchableOpacity style={styles.iconButton} onPress={handleDeletePhotos}>
             <MaterialIcons name="delete" size={40} color="#6200ee" />
@@ -155,7 +152,7 @@ function GalleryScreen({ photos, setPhotos }) {
   );
 }
 
-// Componente Principal com Navegação
+
 export default function App() {
   const [photos, setPhotos] = useState<string[]>([]);
 
@@ -163,8 +160,8 @@ export default function App() {
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={{
-          tabBarActiveTintColor: '#6200ee', // Cor do ícone/texto ativo
-          tabBarInactiveTintColor: '#ccc', // Cor do ícone/texto inativo
+          tabBarActiveTintColor: '#6200ee', 
+          tabBarInactiveTintColor: '#ccc', 
         }}
       >
         <Tab.Screen
@@ -192,7 +189,7 @@ export default function App() {
   );
 }
 
-// Estilos
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -202,24 +199,24 @@ const styles = StyleSheet.create({
   },
   camera: {
     width: '100%',
-    height: '70%', // Aumentei a altura da câmera
+    height: '70%', 
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginTop: 20, // Posiciona os botões mais abaixo
+    marginTop: 20, 
     width: '100%',
   },
   galleryButtonContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 20, // Posiciona os botões mais abaixo
+    marginTop: 20, 
     width: '100%',
   },
   iconButton: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal: 20, // Espaçamento entre os botões
+    marginHorizontal: 20, 
   },
   thumbnail: {
     width: 100,
